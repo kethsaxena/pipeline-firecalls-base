@@ -83,14 +83,6 @@ def get_file_id_by_name(filename):
     return files[0]['id']
 
 def download_from_drive(file_id, destination):
-    # SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
-    # SERVICE_ACCOUNT_FILE = find_service_account_key()
-
-    # creds = service_account.Credentials.from_service_account_file(
-    #     SERVICE_ACCOUNT_FILE,
-    #     scopes=SCOPES
-    # )
-    # service = build('drive', 'v3', credentials=creds)
     service = get_obj_GDService()
     request = service.files().get_media(fileId=file_id)
     fh = io.FileIO(destination, 'wb')
@@ -102,15 +94,3 @@ def download_from_drive(file_id, destination):
         print(f"Downloading: {int(status.progress() * 100)}%")
 
     print(f"✅ Download complete: {destination}")
-
-
-# SCOPES = ["https://www.googleapis.com/auth/drive.readonly"]
-# SERVICE_ACCOUNT_FILE = find_service_account_key()
-
-# creds = service_account.Credentials.from_service_account_file(
-#     SERVICE_ACCOUNT_FILE,
-#     scopes=SCOPES
-# )
-
-# service = build('drive', 'v3', credentials=creds)
-# print(get_file_id_by_name(service,"FDEMS_DispatchedCallsService_20240831.csv"))
