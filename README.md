@@ -7,6 +7,8 @@
 
 ### Steps to Run
 
-#### 1️⃣ Start the containers
+####  Start the containers
 ```bash
-docker compose up -d
+docker compose up -build 
+```
+####  TEST the component containers
