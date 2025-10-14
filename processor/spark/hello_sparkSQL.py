@@ -1,35 +1,43 @@
 from pyspark.sql import SparkSession
-# --- USER CONFIG: put your Spark SQL code here ---
-spark_sql_code = """
-SELECT Name, Age, Age + 10 AS AgeIn10Years
-FROM people
-WHERE Age > 25
-"""
+import time,os
+from utils.footnotes import timed_job
 
-# --- Spark session setup ---
-spark = SparkSession.builder \
-    .appName("SparkSQLRunner") \
-    .master("local[*]") \
-    .getOrCreate()
+@timed_job
+def run_spark_job():
+    # --- USER CONFIG: put your Spark SQL code here ---
+    spark_sql_code = """
+    SELECT Name, Age, Age + 10 AS AgeIn10Years
+    FROM people
+    WHERE Age > 25
+    """
 
-# Create a sample DataFrame
-data = [("Alice", 25), ("Bob", 30), ("Charlie", 35)]
-df = spark.createDataFrame(data, ["Name", "Age"])
+    # --- Spark session setup ---
+    spark = SparkSession.builder \
+        .appName("SparkSQLRunner") \
+        .master("local[*]") \
+        .getOrCreate()
 
-# Register DataFrame as a temporary view to run SQL
-df.createOrReplaceTempView("people")
+    # Create a sample DataFrame
+    data = [("Alice", 25), ("Bob", 30), ("Charlie", 35)]
+    df = spark.createDataFrame(data, ["Name", "Age"])
 
-# Run the Spark SQL code
-result_df = spark.sql(spark_sql_code)
+    # Register DataFrame as a temporary view to run SQL
+    df.createOrReplaceTempView("people")
 
-# Show the result
-result_df.show()
+    # Run the Spark SQL code
+    result_df = spark.sql(spark_sql_code)
 
-# Simple action to trigger a job (so you can see it in Spark UI)
-print("Total rows:", result_df.count())
+    # Show the result
+    result_df.show()
 
-# Keep the session alive for Spark UI inspection
-input("Spark is running. Open http://localhost:4040 to view the UI and press Enter to stop...")
+    # Simple action to trigger a job (so you can see it in Spark UI)
+    print("Total rows:", result_df.count())
 
-# Stop the Spark session
-spark.stop()
+    # # Keep the session alive for Spark UI inspection
+    # input("Spark is running. Open http://localhost:4040 to view the UI and press Enter to stop...")
+
+    # # Stop the Spark session
+    # spark.stop()
+
+if __name__ == "__main__":
+    run_spark_job()
