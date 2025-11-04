@@ -14,7 +14,7 @@
 ```
  python runner.py
 ```
-## ✅ To-Do Tracker
+## To-Do Tracker
 
 | Task | Status | Owner | Due Date | Notes |
 |------|---------|--------|----------|-------|
