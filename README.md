@@ -21,3 +21,8 @@
 | Silver Layer           | In Progress   | 2025-11-04 | 2025-11-08 |
 | Airflow DAG            | Planned       | 2025-11-09 | 2025-11-12 |
 | QA + Optimization      | Planned       | 2025-11-13 | 2025-11-15 |
+
+
+## LLD To-Do Tracker
+1. Fix the utilities module
+2. Fix the auto detect spark and pandas jobs

@@ -1,5 +1,5 @@
 import time,os
-from utils.footnotes import timed_job
+from utils.timers import timed_job
 
 @timed_job
 def run_spark_job(spark):
@@ -9,30 +9,6 @@ def run_spark_job(spark):
     FROM people
     WHERE Age > 25
     """
-
-    # --- Spark session setup ---
-    # spark = SparkSession.builder \
-    #     .appName("SparkSQLRunner") \
-    #     .master("local[1]") \
-    #     .config("spark.driver.memory", "512m") \
-    #     .config("spark.sql.shuffle.partitions","1") \
-    #     .config("spark.executor.instances", "1") \
-    #     .config("spark.sql.catalogImplementation", "in-memory") \
-    #     .getOrCreate()
-    
-    # spark = (
-    #     SparkSession.builder
-    #     .appName("FastSparkSQLRunner")
-    #     .master("local[*]")
-    #     .config("spark.ui.enabled", "false")
-    #     .config("spark.eventLog.enabled", "false")
-    #     .config("spark.driver.memory", "512m")
-    #     .config("spark.sql.shuffle.partitions", "1")
-    #     .config("spark.executor.instances", "1")
-    #     .config("spark.sql.catalogImplementation", "in-memory")
-    #     .getOrCreate()
-    # )
-
     # Create a sample DataFrame
     data = [("Alice", 25), ("Bob", 30), ("Charlie", 35)]
     df = spark.createDataFrame(data, ["Name", "Age"])
