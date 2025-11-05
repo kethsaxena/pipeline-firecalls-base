@@ -15,10 +15,9 @@
  python runner.py
 ```
 ## To-Do Tracker
-
-| Task | Status | Owner | Due Date | Notes |
-|------|---------|--------|----------|-------|
-| Setup S3 Bronze Layer | ✅ Done | PS | Oct 20 | Working fine in staging |
-| Create Delta Table for Silver Layer | 🚧 In Progress | PS | Nov 5 | Schema defined in `schema.csv` |
-| Add Airflow DAG for Daily Load | ⏳ Planned | PS | Nov 10 | Use `apache/airflow:2.9.1-python3.9` |
-| QA and Optimize Runtime | ⏳ Planned | PS | Nov 15 | Reduce runtime from 8min to <3min |
+| Task                   | Status        | Start      | End        |
+|------------------------|---------------|------------|------------|
+| Setup Bronze Layer     | Done          | 2025-11-01 | 2025-11-03 |
+| Silver Layer           | In Progress   | 2025-11-04 | 2025-11-08 |
+| Airflow DAG            | Planned       | 2025-11-09 | 2025-11-12 |
+| QA + Optimization      | Planned       | 2025-11-13 | 2025-11-15 |
