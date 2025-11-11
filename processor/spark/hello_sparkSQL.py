@@ -1,5 +1,5 @@
 import time,os
-from utils.timers import timed_job
+from processor.utils.timers import timed_job
 
 @timed_job
 def run_spark_job(spark):

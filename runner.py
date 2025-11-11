@@ -1,13 +1,17 @@
 import subprocess, os, signal, sys
 
+# Ensure project root is in sys.path
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+if PROJECT_ROOT not in sys.path:
+    sys.path.insert(0, PROJECT_ROOT)
 
 def runSpark(spark_job_path):
-        
     result = subprocess.run([
         "docker", "run", "-d", "--rm",
         "-p", "4040:4040",
         "-v", f"{os.getcwd()}:/opt/workdir",
         "-w", "/opt/workdir",
+        "-e", "PYTHONPATH=/opt/workdir",
         "apache/spark-py:v3.4.0",
         "/bin/bash", "-c", f"/opt/spark/bin/spark-submit {spark_job_path}"
     ], capture_output=True, text=True)
@@ -57,17 +61,27 @@ def main():
     job_name = sys.argv[2]              # script filename
 
     if job_type == "spark":
+        print(f"DEBUG: Mounting local dir: {os.getcwd()} to /opt/workdir in container")
         spark_job_path = f"processor/spark/{job_name}"
         runSpark(spark_job_path)
     elif job_type == "pandas":
-        pandas_job_path = f"processor/pandas/{job_name}"
-        # Run pandas job locally
-        result = subprocess.run(["python", pandas_job_path])
+        # Path to the Python in the current venv
+        python_executable = sys.executable
+
+        pandas_job_path = os.path.join(PROJECT_ROOT, "processor", "pandas", job_name)
+
+        # Ensure PYTHONPATH includes project root
+        env = os.environ.copy()
+        env["PYTHONPATH"] = PROJECT_ROOT
+
+        # Run pandas job using venv Python
+        result = subprocess.run(
+            [python_executable, pandas_job_path],
+            cwd=PROJECT_ROOT,
+            env=env,
+            check=True
+        )
         print(f"[SUCCESS] Pandas job '{job_name}' finished with return code {result.returncode}")
-
-
-
-
 
 if __name__ == "__main__":
     main()

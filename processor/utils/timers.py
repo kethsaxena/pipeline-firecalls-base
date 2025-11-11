@@ -1,9 +1,10 @@
 import time
 import os,inspect
 from functools import wraps
-from utils.spark_helper import get_spark_session
 
 def timed_job(func):
+    from processor.utils.spark_helper import get_spark_session
+
     """Decorator to measure and print job duration with script name."""
     @wraps(func)
     def wrapper(*args, **kwargs):
@@ -28,5 +29,24 @@ def timed_job(func):
 
         total_end = time.time()
         print(f"\nTotal runtime: {total_end - total_start:.2f} seconds\n")
+        return result
+    return wrapper
+
+def timed_Pandajob(func):
+    """Decorator to measure and print PANDA job duration with script name."""
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        print(f"Starting PANDA job: {func.__name__}\n")
+        total_start = time.time()
+        frame = inspect.stack()[1]
+
+        caller_file = os.path.basename(frame.filename)
+
+        try:
+            result = func(*args, **kwargs)
+        finally:
+            elapsed = time.time() - total_start
+            print(f"\n{caller_file} PandasJob completed in {elapsed:.2f} seconds.")
+
         return result
     return wrapper
